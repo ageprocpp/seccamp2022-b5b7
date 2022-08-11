@@ -36,16 +36,16 @@ jobs:
           context: ./
           file: ./Dockerfile
           tags: |
-            ghcr.io/ageprocpp/test-image:latest
+            ghcr.io/${{ github.actor }}/test-image:latest
           platforms: linux/amd64
           push: true
 
       - name: Sign the container image
         env:
           COSIGN_EXPERIMENTAL: "true"
-        run: cosign sign --force ghcr.io/${{ github.repository }}@${{ steps.push-step.outputs.digest }}
+        run: cosign sign --force ghcr.io/${{ github.actor }}/test-image:latest
 
       - name: Verify the container image
         env:
           COSIGN_EXPERIMENTAL: "true"
-        run: cosign verify ghcr.io/${{ github.repository }}@${{ steps.push-step.outputs.digest }}
+        run: cosign verify ghcr.io/${{ github.actor }}/test-image:latest
